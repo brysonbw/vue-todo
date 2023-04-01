@@ -7,12 +7,13 @@
         label="Enter todo"
         placeholder="e.g Go running"
         outlined
-        class="mb-n3"
+        class="mb-n5"
         appennd-icon="plus"
         clearable
       ></v-text-field>
       <v-btn
         block
+        class="mb-3"
         :disabled="!todo"
         color="success"
         size="large"
