@@ -60,6 +60,7 @@ export default {
   data() {
     return {
       todo: null,
+      todos: this.todoList, // assign passed prop todoList to todos locally
       snackbar: {
         show: false,
         message: null,
@@ -67,12 +68,29 @@ export default {
       },
     };
   },
-  computed: {
-    todos() {
-      return this.todoList;
+  // when component mounts invoke fetchTodos()
+  mounted() {
+    return this.fetchTodos();
+  },
+  // watch changes for todos
+  watch: {
+    todos: {
+      // update localStorage 'todoList' with new todos
+      handler(newTodos) {
+        localStorage.setItem('todoList', JSON.stringify(newTodos));
+      },
+      deep: true, // set to true to trigger when the watched property has been assigned a new value (todos)
     },
   },
   methods: {
+    fetchTodos() {
+      const getTodos = JSON.parse(localStorage.getItem('todoList'));
+      if (getTodos) {
+        this.todos = getTodos;
+      } else {
+        return [];
+      }
+    },
     onSubmit() {
       // trim todo input
       const todoInput = this.todo.trim();
@@ -92,7 +110,7 @@ export default {
           color: 'red',
         });
       }
-      // add new todo obj to todoList array
+      // add new todo object to todos
       const newTodo = {
         id: uuidv4().slice(0, 8), // uuid lib for generating random id
         body: todoInput,
@@ -109,13 +127,13 @@ export default {
     },
     // toggle todo done checkbox
     toggleDone(id) {
-      const todo = this.todos.filter((todo) => todo.id === id);
-      todo.done != todo.done;
+      const todoIndex = this.todos.findIndex((todo) => todo.id === id);
+      const todo = this.todos[todoIndex];
+      todo.done = !todo.done;
     },
     // delete todo
     deleteTodo(id) {
-      const todoIndex = this.todos.findIndex((todo) => todo.id === id);
-      this.todos.splice(todoIndex, 1);
+      this.todos = this.todos.filter((todo) => todo.id !== id);
       this.snackbar = {
         show: true,
         message: 'Todo deleted successfully!',

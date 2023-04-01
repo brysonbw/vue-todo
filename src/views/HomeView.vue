@@ -11,7 +11,7 @@
   </v-container>
 </template>
 
-<script lang="ts">
+<script>
 import Vue from 'vue';
 import TodoList from '@/components/TodoList.vue';
 export default Vue.extend({
