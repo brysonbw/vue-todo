@@ -1,5 +1,5 @@
 <template>
-  <div class="text-left my-3">
+  <div class="text-left">
     <v-list-item @click="$emit('toggleDone')">
       <template v-slot:default>
         <v-list-item-action>
