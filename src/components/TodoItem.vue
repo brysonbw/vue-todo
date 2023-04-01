@@ -1,8 +1,13 @@
 <template>
-  <div class="text-left my-3">
-    <v-list-item @click="$emit('toggleDone')">
+  <div class="text-left">
+    <v-list-item
+      :to="{
+        name: 'todo-detail',
+        params: { id: todo.id, body: todo.body, createdAt: todo.createdAt },
+      }"
+    >
       <template v-slot:default>
-        <v-list-item-action>
+        <v-list-item-action @click.prevent="$emit('toggleDone')">
           <v-checkbox :input-value="todo.done"></v-checkbox>
         </v-list-item-action>
 
@@ -11,7 +16,7 @@
             todo.body
           }}</v-list-item-subtitle>
         </v-list-item-content>
-        <v-icon @click.stop="$emit('deleteTodo')">mdi-delete</v-icon>
+        <v-icon @click.stop.prevent="$emit('deleteTodo')">mdi-delete</v-icon>
       </template>
     </v-list-item>
     <v-divider></v-divider>
@@ -23,5 +28,3 @@ export default {
   props: ['todo'],
 };
 </script>
-
-<style></style>

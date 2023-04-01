@@ -7,12 +7,13 @@
         label="Enter todo"
         placeholder="e.g Go running"
         outlined
-        class="mb-n3"
+        class="mb-n5"
         appennd-icon="plus"
         clearable
       ></v-text-field>
       <v-btn
         block
+        class="mb-3"
         :disabled="!todo"
         color="success"
         size="large"
@@ -93,7 +94,7 @@ export default {
       }
       // add new todo obj to todoList array
       const newTodo = {
-        id: uuidv4(), // uuid lib for generating random id
+        id: uuidv4().slice(0, 8), // uuid lib for generating random id
         body: todoInput,
         done: false,
         createdAt: Date.now(),
