@@ -22,59 +22,43 @@
         Submit
       </v-btn>
     </v-form>
-    <!-- Todo List -->
-    <div
-      v-show="todos.length"
-      class="text-left my-3"
+    <!-- Todo Item -->
+    <TodoItem
+      @deleteTodo="deleteTodo(todo.id)"
+      @toggleDone="toggleDone(todo.id)"
       v-for="todo in todos"
       :key="todo.id"
-    >
-      <v-list-item @click="toggleDone(todo.id)">
-        <template v-slot:default>
-          <v-list-item-action>
-            <v-checkbox :input-value="todo.done"></v-checkbox>
-          </v-list-item-action>
+      :todo="todo"
+    />
+    <!-- No Todo Items Placeholder -->
+    <v-container v-show="!todos.length" class="grey lighten-5 mx-auto">
+      <h2 class="pa-2 dispklay-2 orange--text">
+        There are no todos to display.
+      </h2>
+    </v-container>
 
-          <v-list-item-content>
-            <v-list-item-subtitle class="font-weight-bold">{{
-              todo.body
-            }}</v-list-item-subtitle>
-          </v-list-item-content>
-          <v-icon @click.stop="deleteTodo(todo.id)">mdi-delete</v-icon>
-        </template>
-      </v-list-item>
-      <v-divider></v-divider>
-    </div>
-    <!-- No Todos Placeholder -->
-    <div v-show="!todos.length">
-      <v-container class="grey lighten-5 mx-auto">
-        <h2 class="pa-2 dispklay-2 orange--text">
-          There are no todos to display.
-        </h2>
-      </v-container>
-    </div>
     <!-- Snackbar -->
-    <div>
-      <v-snackbar
-        :color="snackbar.color"
-        timeout="5000"
-        top
-        v-model="snackbar.show"
-        :outlined="snackbar.color === 'success'"
-      >
-        <strong>{{ snackbar.message }}</strong>
-      </v-snackbar>
-    </div>
+    <v-snackbar
+      :color="snackbar.color"
+      timeout="5000"
+      top
+      v-model="snackbar.show"
+      :outlined="snackbar.color === 'success'"
+    >
+      <strong>{{ snackbar.message }}</strong>
+    </v-snackbar>
   </section>
 </template>
 
 <script>
 import { v4 as uuidv4 } from 'uuid';
+import TodoItem from '@/components/TodoItem.vue';
 export default {
+  props: ['todoList'],
+  components: { TodoItem },
   data() {
     return {
       todo: null,
-      todoList: [],
       snackbar: {
         show: false,
         message: null,
@@ -83,11 +67,8 @@ export default {
     };
   },
   computed: {
-    // return todos sorted by createdAt (date) -  desc order
     todos() {
-      return this.todoList
-        .slice()
-        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      return this.todoList;
     },
   },
   methods: {
@@ -112,13 +93,13 @@ export default {
       }
       // add new todo obj to todoList array
       const newTodo = {
-        id: uuidv4(),
+        id: uuidv4(), // uuid lib for generating random id
         body: todoInput,
         done: false,
         createdAt: Date.now(),
       };
       this.todo = '';
-      this.todoList.push(newTodo);
+      this.todos.push(newTodo);
       this.snackbar = {
         show: true,
         message: 'Todo added successfully!',
@@ -127,12 +108,13 @@ export default {
     },
     // toggle todo done checkbox
     toggleDone(id) {
-      const todo = this.todoList.filter((todo) => todo.id === id);
+      const todo = this.todos.filter((todo) => todo.id === id);
       todo.done != todo.done;
     },
     // delete todo
     deleteTodo(id) {
-      this.todoList = this.todoList.filter((todo) => todo.id !== id);
+      const todoIndex = this.todos.findIndex((todo) => todo.id === id);
+      this.todos.splice(todoIndex, 1);
       this.snackbar = {
         show: true,
         message: 'Todo deleted successfully!',
