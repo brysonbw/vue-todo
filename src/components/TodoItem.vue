@@ -3,7 +3,7 @@
     <v-list-item
       :to="{
         name: 'todo-detail',
-        params: { id: todo.id, body: todo.body, createdAt: todo.createdAt },
+        params: { id: todo.id },
       }"
     >
       <template v-slot:default>

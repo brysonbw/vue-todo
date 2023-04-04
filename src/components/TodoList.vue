@@ -68,8 +68,7 @@ export default {
       },
     };
   },
-  // when component mounts invoke fetchTodos()
-  mounted() {
+  created() {
     return this.fetchTodos();
   },
   // watch changes for todos
