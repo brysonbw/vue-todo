@@ -1,7 +1,7 @@
 <template>
   <section>
-    <!-- Todo Form -->
-    <v-form @submit.prevent="onSubmit">
+    <!-- Todo Add Form -->
+    <v-form v-if="!isTodoEditing" @submit.prevent="addTodo">
       <v-text-field
         v-model="todo"
         label="Enter todo"
@@ -23,8 +23,44 @@
         Submit
       </v-btn>
     </v-form>
+    <!-- Todo Edit/Update Form -->
+    <v-form v-else @submit.prevent="updateTodo">
+      <v-text-field
+        v-model="todo"
+        label="Edit todo"
+        placeholder="e.g Go running"
+        outlined
+        class="mb-n5"
+        appennd-icon="plus"
+        clearable
+      ></v-text-field>
+      <v-btn
+        block
+        class="mb-3"
+        :disabled="!todo"
+        color="success"
+        size="large"
+        type="submit"
+        variant="elevated"
+      >
+        Edit
+      </v-btn>
+      <!-- Cancel Edit/Update Button -->
+      <v-btn
+        block
+        @click="cancelEdit"
+        class="mb-3 white--text"
+        color="orange"
+        size="large"
+        type="button"
+        variant="elevated"
+      >
+        Cancel
+      </v-btn>
+    </v-form>
     <!-- Todo Item -->
     <TodoItem
+      @editTodo="editTodo(todo.id)"
       @deleteTodo="deleteTodo(todo.id)"
       @toggleDone="toggleDone(todo.id)"
       v-for="todo in todos"
@@ -60,6 +96,8 @@ export default {
   data() {
     return {
       todo: null,
+      isTodoEditing: false,
+      todoEditIndex: null,
       todos: this.todoList, // assign passed prop todoList to todos locally
       snackbar: {
         show: false,
@@ -90,7 +128,7 @@ export default {
         return [];
       }
     },
-    onSubmit() {
+    addTodo() {
       // trim todo input
       const todoInput = this.todo.trim();
       // check if todo input is empty
@@ -124,11 +162,45 @@ export default {
         color: 'success',
       };
     },
+    updateTodo() {
+      // trim todo input
+      const todoEditInput = this.todo.trim();
+      // check if todo input is empty
+      if (!todoEditInput.length) {
+        return (this.snackbar = {
+          show: true,
+          message: 'Please enter a valid todo.',
+          color: 'red',
+        });
+      }
+      // check if todo input is > 50 characters
+      if (todoEditInput.length > 50) {
+        return (this.snackbar = {
+          show: true,
+          message: 'Todo must be less than or equal to 50 characters.',
+          color: 'red',
+        });
+      }
+      this.todos[this.todoEditIndex].body = todoEditInput;
+      this.todo = '';
+      this.isTodoEditing = false;
+      this.snackbar = {
+        show: true,
+        message: 'Todo updated successfully!',
+        color: 'success',
+      };
+    },
     // toggle todo done checkbox
     toggleDone(id) {
       const todoIndex = this.todos.findIndex((todo) => todo.id === id);
       const todo = this.todos[todoIndex];
       todo.done = !todo.done;
+    },
+    // edit todo
+    editTodo(id) {
+      this.isTodoEditing = true;
+      this.todoEditIndex = this.todos.findIndex((todo) => todo.id === id);
+      this.todo = this.todos[this.todoEditIndex].body;
     },
     // delete todo
     deleteTodo(id) {
@@ -138,6 +210,11 @@ export default {
         message: 'Todo deleted successfully!',
         color: 'success',
       };
+    },
+    // cancel edit function for button
+    cancelEdit() {
+      this.todo = '';
+      this.isTodoEditing = false;
     },
   },
 };
