@@ -13,35 +13,26 @@ describe('<TheNavbar />', () => {
   });
 
   it('renders <TheNavbar />', () => {
-    const wrapper = shallowMount(TheNavbar, {
-      localVue,
-      vuetify,
-    });
+    const wrapper = shallowMount(TheNavbar);
     const navElement = wrapper.find('nav');
     expect(navElement.exists()).toBe(true);
     expect(wrapper.exists()).toBe(true);
   });
 
   it('renders <a> tag (github link)', () => {
-    const wrapper = shallowMount(TheNavbar, {
-      localVue,
-      vuetify,
-    });
+    const wrapper = shallowMount(TheNavbar);
     const a = wrapper.find('a');
     expect(a.exists()).toBe(true);
   });
 
   it('renders <a> tag href (vue-todo repo url)', () => {
-    const wrapper = shallowMount(TheNavbar, {
-      localVue,
-      vuetify,
-    });
+    const wrapper = shallowMount(TheNavbar);
     const a = wrapper.find('a');
 
     expect(a.attributes().href).toBe('https://github.com/brysonbw/vue-todo');
   });
 
-  it('renders github v-icon/text', () => {
+  it('renders v-icon text', () => {
     const wrapper = shallowMount(TheNavbar, {
       localVue,
       vuetify,
@@ -50,5 +41,15 @@ describe('<TheNavbar />', () => {
 
     // expect material icon text within v-icon
     expect(icon.text()).toBe('mdi-github');
+  });
+
+  it('renders v-toolbar-title text', () => {
+    const wrapper = shallowMount(TheNavbar, {
+      localVue,
+      vuetify,
+    });
+    const toolbar = wrapper.findComponent({ name: 'v-toolbar-title' });
+
+    expect(toolbar.text()).toBe('Vue Todo');
   });
 });
