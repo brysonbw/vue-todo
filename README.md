@@ -1,6 +1,6 @@
 # Vue Todo 
 
-A simple vue todo list app using [vue 2](https://v2.vuejs.org/v2/guide/) and [vuetify](https://v2.vuetifyjs.com/en/)
+A simple vue todo list (CRUD) app using [vue 2](https://v2.vuejs.org/v2/guide/) and [vuetify](https://v2.vuetifyjs.com/en/)
 
 
 ### Usage
@@ -22,6 +22,11 @@ npm run dev
 ### Build
 ```
 npm run build
+```
+
+### Unit Test
+```
+npm run test:unit
 ```
 
 ### Lint
