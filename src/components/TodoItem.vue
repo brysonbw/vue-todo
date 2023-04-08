@@ -16,7 +16,17 @@
             todo.body
           }}</v-list-item-subtitle>
         </v-list-item-content>
-        <v-icon @click.stop.prevent="$emit('deleteTodo')">mdi-delete</v-icon>
+        <!-- Edit Todo Icon -->
+        <v-icon color="grey" @click.stop.prevent="$emit('editTodo')" dark>
+          mdi-pencil-outline
+        </v-icon>
+        <!-- Delete Todo Icon -->
+        <v-icon
+          color="red"
+          class="ml-3"
+          @click.stop.prevent="$emit('deleteTodo')"
+          >mdi-delete</v-icon
+        >
       </template>
     </v-list-item>
     <v-divider></v-divider>
