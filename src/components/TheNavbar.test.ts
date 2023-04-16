@@ -1,6 +1,6 @@
 import Vuetify from 'vuetify';
 import Vue from 'vue';
-import TheNavbar from '../components/TheNavbar.vue';
+import TheNavbar from '@/components/TheNavbar.vue';
 import { createLocalVue, shallowMount } from '@vue/test-utils';
 
 describe('<TheNavbar />', () => {

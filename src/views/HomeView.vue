@@ -5,7 +5,7 @@
         <!-- Showcase Title/Text-->
         <h1 class="display-2 font-weight-bold mb-10">Vue Todo</h1>
         <!-- Todo List -->
-        <TodoList :todoList="todoList" />
+        <TodoList />
       </v-col>
     </v-row>
   </v-container>
@@ -16,12 +16,6 @@ import Vue from 'vue';
 import TodoList from '@/components/TodoList.vue';
 export default Vue.extend({
   name: 'HomeView',
-
   components: { TodoList },
-  data() {
-    return {
-      todoList: [],
-    };
-  },
 });
 </script>
